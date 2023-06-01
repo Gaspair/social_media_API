@@ -1,13 +1,16 @@
-const express = require("express");
+import express from "express";
+
+import cors from "cors";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import helmet from "helmet";
+import multer from "multer";
+import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+
 const app = express();
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const helmet = require("helmet");
-const multer = require("multer");
-const morgan = require("morgan");
-const path = require("path");
-const { fileURLToPath } = require("url");
 
 // CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
@@ -34,3 +37,14 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+const PORT = process.env.PORT || 6000;
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+  })
+  .catch((err) => console.log(`${err} did not connect!`));
