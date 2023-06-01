@@ -1,15 +1,15 @@
 import express from "express";
-
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import helmet from "helmet";
 import multer from "multer";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-import dotenv from "dotenv";
-import { register } from "./controllers/auth.json";
+import authRoutes from "./routes/auth.js";
+import { register } from "./controllers/auth.js";
 
 const app = express();
 
@@ -40,6 +40,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 // routes with files
 app.post("/auth/register", upload.single("picture"), register);
+
+// ROUTES
+app.use("/auth", authRoutes);
 
 // MONGO SETUP
 const PORT = process.env.PORT || 6000;
