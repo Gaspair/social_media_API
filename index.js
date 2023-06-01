@@ -9,6 +9,7 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+import { register } from "./controllers/auth.json";
 
 const app = express();
 
@@ -37,7 +38,10 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+// routes with files
+app.post("/auth/register", upload.single("picture"), register);
 
+// MONGO SETUP
 const PORT = process.env.PORT || 6000;
 mongoose
   .connect(process.env.MONGO_URL, {
