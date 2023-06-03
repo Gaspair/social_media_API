@@ -9,7 +9,11 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
 import { register } from "./controllers/auth.js";
+import postRoutes from "./routes/posts.js";
+import { verifyToken } from "./middleware/auth.js";
+import { createPost } from "./controllers/post.js";
 
 const app = express();
 
@@ -40,10 +44,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 // routes with files
 app.post("/auth/register", upload.single("picture"), register);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 // ROUTES
 app.use("/auth", authRoutes);
-
+app.use("/users", userRoutes);
+app.user("/posts", postRoutes);
 // MONGO SETUP
 const PORT = process.env.PORT || 6000;
 mongoose
