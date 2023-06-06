@@ -13,7 +13,7 @@ import userRoutes from "./routes/users.js";
 import { register } from "./controllers/auth.js";
 import postRoutes from "./routes/posts.js";
 import { verifyToken } from "./middleware/auth.js";
-import { createPost } from "./controllers/post.js";
+import { createPost } from "./controllers/posts.js";
 
 const app = express();
 
@@ -49,7 +49,7 @@ app.post("/posts", verifyToken, upload.single("picture"), createPost);
 // ROUTES
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-app.user("/posts", postRoutes);
+app.use("/posts", postRoutes);
 // MONGO SETUP
 const PORT = process.env.PORT || 6000;
 mongoose
